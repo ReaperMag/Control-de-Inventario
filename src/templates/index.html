@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Responsivo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .stock-high {
+            background-color: #d4edda; /* Verde claro */
+            color: #155724;
+        }
+        .stock-low {
+            background-color: #fff3cd; /* Amarillo claro */
+            color: #856404;
+        }
+        .stock-out {
+            background-color: #f8d7da; /* Rojo claro */
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Entrega de Materiales</h2>
+                        <form action="{{url_for('/.add_item')}}" method="post">
+                            <div class="form-group">
+                                <label for="codigo">Código</label>
+                                <select class="form-control" id="codigo" name="codigo">
+                                    {% for i in codigos %}
+                                    <option value="{{i}}">{{i}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="materiales">Materiales</label>
+                                <select class="form-control" id="material" name="material">
+                                    {% for i in materiales %}
+                                    <option value="{{i}}">{{i}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" min="0" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Tabla Materiales-->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <h2>STOCK</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in base %}
+                        <tr class="{% if b.stock > 20 %}stock-high{% elif b.stock > 0 %}stock-low{% else %}stock-out{% endif %}">
+                            <td>{{ b.material }}</td>
+                            <td>{{ b.stock }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Agregar Stock-->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Agregar material al stock</h2>
+                        <form action="{{url_for('/.add_stock')}}" method="post">
+                            <div class="form-group">
+                                <label for="materiales">Material</label>
+                                <select class="form-control" id="material" name="material">
+                                    {% for i in materiales %}
+                                    <option value="{{i}}">{{i}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" min="0" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,13 +1,35 @@
-from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 import os
 
-app = Flask(__name__)
+from src import crear_app
+from src.imports import db
 
-@app.route("/")
-def index():
+def inicializar_materiales():
+    materiales = ["Tubos", "Cartillas", "Tubos tapa Verde"]
+    from src.Models.models import Materiales
     
-    return render_template("index.html")
+    if not Materiales.query.first():
+        for m in materiales:
+            nuevo_material = Materiales(m,0)
+            db.session.add(nuevo_material)
+        db.session.commit()
+        print("Materiales iniciales creados")
+    else:
+        print("No se insertaron materiales")
+
+app = crear_app()
+# app.config.from_object(Config)
+# print(app.config)
+
+db.init_app(app)
+
+with app.app_context():
+
+    db.create_all()
+    inicializar_materiales()
 
 if __name__ == "__main__":
+    
     port = int(os.environ.get("PORT",5000))
+    
     app.run(debug=True, port=port)
