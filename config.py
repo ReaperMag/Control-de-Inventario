@@ -6,5 +6,5 @@ load_dotenv()
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY","NOSE123")
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///base1.db"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     
